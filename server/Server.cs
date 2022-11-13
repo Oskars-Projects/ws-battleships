@@ -13,8 +13,6 @@ class Server
         server.AddWebSocketService<PlayerSocketBehavior>("/Game");
         server.Start();
         Console.WriteLine(server.Address);
-
-        Console.ReadKey();
     }
 }
 
