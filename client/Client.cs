@@ -27,4 +27,9 @@ class Server
     {
         ws.Send(MessageType.FIRE + MessageType.SUFFIX + data);
     }
+
+    private static void SendEventMessage(WebSocket ws, MessageType msgType, string data)
+    {
+        ws.Send(msgType + MessageType.SUFFIX + data);
+    }
 }
