@@ -8,13 +8,11 @@ class Server
 
     public static void Main(string[] args)
     {
-        WebSocketServer server = new WebSocketServer("ws://127.0.0.1:5000");
+        WebSocketServer server = new("ws://" + Variables.SERVER_ADDRESS);
 
         server.AddWebSocketService<PlayerSocketBehavior>("/Game");
         server.Start();
         Console.WriteLine(server.Address);
-
-        Console.ReadKey();
     }
 }
 
