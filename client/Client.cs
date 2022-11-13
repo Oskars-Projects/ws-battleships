@@ -7,7 +7,7 @@ class Server
 
     public static void Main()
     {
-        using (WebSocket ws = new WebSocket("ws://127.0.0.1:5000/Game"))
+        using (WebSocket ws = new WebSocket("ws://" + Variables.SERVER_ADDRESS + "/Game"))
         {
             ws.OnMessage += Ws_OnMessage;
 
