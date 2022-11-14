@@ -5,7 +5,6 @@ using WebSocketSharp.NetCore.Server;
 
 class Server
 {
-
     public static void Main(string[] args)
     {
         WebSocketServer server = new("ws://" + Variables.SERVER_ADDRESS);
