@@ -5,7 +5,7 @@ using server.SocketManager;
 
 namespace server.Handlers
 {
-    public class SocketMessageHandler : SocketHandler
+    public abstract class SocketMessageHandler : SocketHandler
     {
         public SocketMessageHandler(ConnectionManager connections) : base(connections)
         {
@@ -18,19 +18,13 @@ namespace server.Handlers
             await SendBroadcastMessage($"{socketId} just joined.");
         }
 
-        public override async Task OnDisconnect(WebSocket socket)
+        public override async Task Receive(WebSocket sender, WebSocketReceiveResult result, byte[] buffer)
         {
-            string socketId = Connections.GetIdBySocket(socket);
-            await SendBroadcastMessage($"{socketId} left.");
-            await base.OnDisconnect(socket);
+            await ReceiveMessage(sender, Encoding.UTF8.GetString(buffer, 0, result.Count));
         }
 
-        public override async Task Receive(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
-        {
-            string id = Connections.GetIdBySocket(socket);
-            string message = $"{id} said: {Encoding.UTF8.GetString(buffer, 0, result.Count)}";
-            await SendBroadcastMessage(message);
-        }
+        public abstract Task ReceiveMessage(WebSocket sender, string message);
+
     }
 }
 
