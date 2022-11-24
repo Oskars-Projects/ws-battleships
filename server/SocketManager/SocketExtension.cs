@@ -10,7 +10,7 @@ namespace server.SocketManager
 		public static IServiceCollection AddWebSocketManager(this IServiceCollection services)
 		{
 			services.AddTransient<ConnectionManager>();
-			foreach(Type type in Assembly.GetEntryAssembly().ExportedTypes)
+			foreach(Type type in Assembly.GetEntryAssembly()?.ExportedTypes)
 			{
 				Debug.WriteLine(type.Name+ ": " + type.BaseType);
 				if (type.GetTypeInfo().BaseType == typeof(SocketMessageHandler))

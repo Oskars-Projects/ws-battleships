@@ -10,8 +10,8 @@ internal class Program
 
     public static async Task StartWebsocket()
     {
-        ClientWebSocket socket = new ClientWebSocket();
-        await socket.ConnectAsync(new Uri("ws://localhost:5083/ws"), CancellationToken.None);
+        ClientWebSocket socket = new();
+        await socket.ConnectAsync(new Uri("ws://localhost:5083/game"), CancellationToken.None);
         Console.WriteLine("Websocket connection established");
 
         var send = Task.Run(async () => await SendAsync(socket));

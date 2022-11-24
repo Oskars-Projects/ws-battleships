@@ -8,11 +8,11 @@ namespace server.Events
 {
     public abstract class MessageEvent
     {
-        public string EventName { get; private set; }
+        public string Name { get; private set; }
 
-        public MessageEvent(string eventName) 
+        public MessageEvent(string name) 
         {
-            EventName = eventName;
+            Name = name;
         }
 
         public abstract Task OnEvent( SocketHandler handler, GamesController gamesController, ConnectionManager connections, WebSocket sender, string message);
