@@ -1,6 +1,8 @@
 ﻿using lib;
+using server.Game.Controllers;
 using server.Handlers;
 using server.SocketManager;
+using System.Diagnostics;
 using System.Net.WebSockets;
 
 namespace server.Events
@@ -11,7 +13,7 @@ namespace server.Events
         {
         }
 
-        public override async Task OnEvent(SocketHandler handler, ConnectionManager connections, WebSocket sender, string message)
+        public override async Task OnEvent(SocketHandler handler, GamesController gamesController, ConnectionManager connections, WebSocket sender, string message)
         {
             await handler.SendBroadcastMessage($"{connections.GetIdBySocket(sender)} shot at {message}");
         }
