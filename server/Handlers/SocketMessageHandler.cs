@@ -18,6 +18,13 @@ namespace server.Handlers
             await SendBroadcastMessage($"{socketId} just joined.");
         }
 
+        public override async Task OnDisconnect(WebSocket socket)
+        {
+            string socketId = Connections.GetIdBySocket(socket);
+            await SendBroadcastMessage($"{socketId} left.");
+            await base.OnDisconnect(socket);
+        }
+
         public override async Task Receive(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
         {
             string id = Connections.GetIdBySocket(socket);
