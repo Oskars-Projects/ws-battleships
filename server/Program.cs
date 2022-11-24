@@ -24,7 +24,12 @@ internal class Program
             app.UseHsts();
         }
 
-        app.Services.GetService<EventMessageHandler>().Events.Add(new OnFireEvent());
+        MessageEvent[] events = new MessageEvent[]
+        {
+            new OnFireEvent()
+        };
+
+        app.Services.GetService<EventMessageHandler>()?.Events.AddRange(events);
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
