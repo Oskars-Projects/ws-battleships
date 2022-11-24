@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using server.Handlers;
 
@@ -11,7 +12,8 @@ namespace server.SocketManager
 			services.AddTransient<ConnectionManager>();
 			foreach(Type type in Assembly.GetEntryAssembly().ExportedTypes)
 			{
-				if (type.GetTypeInfo().BaseType == typeof(SocketHandler))
+				Debug.WriteLine(type.Name+ ": " + type.BaseType);
+				if (type.GetTypeInfo().BaseType == typeof(SocketMessageHandler))
 					services.AddSingleton(type);
 			}
 			return services;
