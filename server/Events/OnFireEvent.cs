@@ -1,4 +1,4 @@
-﻿using lib;
+﻿using Lib;
 using server.Game.Controllers;
 using server.Handlers;
 using server.SocketManager;
@@ -9,12 +9,16 @@ namespace server.Events
 {
     public class OnFireEvent : MessageEvent
     {
-        public OnFireEvent() : base(MessageType.FIRE)
+        public OnFireEvent() : base(EventName.SendFireEvent)
         {
         }
 
         public override async Task OnEvent(SocketHandler handler, GamesController gamesController, ConnectionManager connections, WebSocket sender, string message)
         {
+            // check if even is in game
+            // check if is in playing state
+            // get game from games controller
+            // take actions there
             await handler.SendBroadcastMessage($"{connections.GetIdBySocket(sender)} shot at {message}");
         }
     }

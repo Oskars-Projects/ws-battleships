@@ -1,4 +1,4 @@
-﻿using lib;
+﻿using Lib;
 using server.Events;
 using server.Game.Controllers;
 using server.SocketManager;
@@ -22,9 +22,9 @@ namespace server.Handlers
         {
             foreach(MessageEvent messageEvent in Events)
             {
-                if (!message.StartsWith(messageEvent.EventName + MessageType.SUFFIX))
+                if (!message.StartsWith(messageEvent.Name + EventName.SUFFIX))
                     continue;
-                await messageEvent.OnEvent(this, GamesController, Connections, sender, message[(messageEvent.EventName.Length + MessageType.SUFFIX.Length)..]);
+                await messageEvent.OnEvent(this, GamesController, Connections, sender, message[(messageEvent.Name.Length + EventName.SUFFIX.Length)..]);
             }
         }
     }
