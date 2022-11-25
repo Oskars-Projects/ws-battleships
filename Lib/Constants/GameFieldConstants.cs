@@ -9,8 +9,8 @@ namespace Lib.Constants
     public static class GameFieldConstants
     {
 
-        public static readonly int Size = 10;
-        public static readonly string XBordersAsString = "a-j";
-        public static readonly string YBordersAsString = "1-10";
+        public const int Size = 10;
+        public const string XBordersAsString = "a-j";
+        public const string YBordersAsString = "1-10";
     }
 }

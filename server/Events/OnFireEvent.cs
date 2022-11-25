@@ -9,7 +9,7 @@ namespace server.Events
 {
     public class OnFireEvent : MessageEvent
     {
-        public OnFireEvent() : base(EventName.SendFireEvent)
+        public OnFireEvent() : base(EventName.SendFireLocationEvent)
         {
         }
 

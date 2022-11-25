@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Lib.Constants
 {
-    public class FieldType
+    public static class FieldType
     {
-        public static readonly int WATER = 0;
-        public static readonly int BOAT = 1;
-        public static readonly int HIT = 2;
-        public static readonly int NOHIT = 3;
+        public const int WATER = 0;
+        public const int BOAT = 1;
+        public const int HIT = 2;
+        public const int NOHIT = 3;
     }
 }

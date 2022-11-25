@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleClient", "ConsoleCli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lib", "Lib\Lib.csproj", "{43A1642B-3849-4439-B1D1-4E554358AE98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibTests", "LibTests\LibTests.csproj", "{3E9FBC2B-24A5-4A73-B63B-58FED51CC033}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibTests", "LibTests\LibTests.csproj", "{3E9FBC2B-24A5-4A73-B63B-58FED51CC033}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleClientTests", "ConsoleClientTests\ConsoleClientTests.csproj", "{A85764A6-DD79-4C17-9C03-1DA14285B70A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{3E9FBC2B-24A5-4A73-B63B-58FED51CC033}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E9FBC2B-24A5-4A73-B63B-58FED51CC033}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E9FBC2B-24A5-4A73-B63B-58FED51CC033}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A85764A6-DD79-4C17-9C03-1DA14285B70A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A85764A6-DD79-4C17-9C03-1DA14285B70A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A85764A6-DD79-4C17-9C03-1DA14285B70A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A85764A6-DD79-4C17-9C03-1DA14285B70A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

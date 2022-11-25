@@ -8,21 +8,21 @@ namespace Lib.Constants
 {
     public static class EventName
     {
-        public static readonly string SUFFIX = "$";
+        public const string SUFFIX = "$";
 
         // PLAYER EVENTS
-        public static readonly string SendUserNameEvent = "p_sendUserName";
-        public static readonly string SendGameNameEvent = "p_sendGameName";
-        public static readonly string SendBoatLocationEvent = "p_sendBoatLocation";
-        public static readonly string SendFireEvent = "p_sendFire";
+        public const string SendUserNameEvent = "p_sendUserName";
+        public const string SendGameNameEvent = "p_sendGameName";
+        public const string SendBoatLocationEvent = "p_sendBoatLocation";
+        public const string SendFireLocationEvent = "p_sendFireLocation";
 
         // SERVER EVENTS
-        public static readonly string AskUserNameRequest = "s_askUserName";
-        public static readonly string AskGameNameRequest = "s_askGameName";
-        public static readonly string AskBoatLocationRequest = "s_askBoatLocation";
-        public static readonly string AskFireRequst = "s_askFire";
-        public static readonly string SendServerMessageEvent = "s_sendMessage";
-        public static readonly string SendGameFieldEvent = "s_sendGameField";
+        public const string AskUserNameRequest = "s_askUserName";
+        public const string AskGameNameRequest = "s_askGameName";
+        public const string AskBoatLocationRequest = "s_askBoatLocation";
+        public const string AskFireLocationRequst = "s_askFireLocation";
+        public const string SendMessageEvent = "s_sendMessage";
+        public const string SendGameFieldEvent = "s_sendGameField";
 
     }
 }
