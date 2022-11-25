@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.WebSockets;
 using System.Text;
-using Lib;
+using Lib.Constants;
 using server.SocketManager;
 
 namespace server.Handlers
@@ -22,6 +22,7 @@ namespace server.Handlers
             // start asking for name
             // will be temporarily added her for test purposes
             await SendMessage(socket, EventName.AskUserNameRequest + EventName.SUFFIX);
+            await SendMessage(socket, EventName.AskBoatLocationRequest+ EventName.SUFFIX);
         }
 
         public override async Task OnDisconnect(WebSocket socket)

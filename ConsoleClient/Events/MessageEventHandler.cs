@@ -1,4 +1,4 @@
-﻿using Lib;
+﻿using Lib.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +11,10 @@ namespace ConsoleClient.Events
     {
         private readonly List<ServerEvent> events = new()
         {
-            new OnAskForUserNameEvent()
+            new OnAskForUserNameEvent(),
+            new OnAskForGameNameEvent(),
+            new OnAskBoatLocationEvent(),
         };
-
-        public MessageEventHandler() { }
 
         public override void OnMessage(Client client, string? message)
         {
@@ -23,12 +23,8 @@ namespace ConsoleClient.Events
                 foreach(ServerEvent serverEvent in events)
                 {
                     if(serverEvent.Name == message.Split('$')[0])
-                    {
-                        serverEvent.OnMessage(client, message);
-                        return;
-                    }
+                        serverEvent.OnMessage(client, message.Split('$')[1]);
                 }
-
             }
             // TODO: remove
             // for debug, later we will handle events only

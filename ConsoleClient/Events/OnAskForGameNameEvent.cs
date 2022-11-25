@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace ConsoleClient.Events
 {
-    public class OnAskForUserNameEvent : ServerEvent
+    public class OnAskForGameNameEvent : ServerEvent
     {
-        public OnAskForUserNameEvent() : base(EventName.AskUserNameRequest) { }
+        public OnAskForGameNameEvent() : base(EventName.AskGameNameRequest) { }
 
         public override void OnMessage(Client client, string? message)
         {
-            Console.Write("Username: ");
+            Console.Write("Gamename: ");
             string? username = Console.ReadLine();
             if (String.IsNullOrWhiteSpace(username))
                 OnMessage(client, message);
             else
-                client.SendMessage(EventName.SendUserNameEvent + EventName.SUFFIX + username);
+                client.SendMessage(EventName.SendGameNameEvent + EventName.SUFFIX + username);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Lib;
+﻿using Lib.Constants;
 using server.Game.Controllers;
 using server.Handlers;
 using server.SocketManager;
