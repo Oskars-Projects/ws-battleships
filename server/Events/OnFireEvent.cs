@@ -1,4 +1,4 @@
-﻿using Lib;
+﻿using Lib.Constants;
 using server.Game.Controllers;
 using server.Handlers;
 using server.SocketManager;
@@ -9,7 +9,7 @@ namespace server.Events
 {
     public class OnFireEvent : MessageEvent
     {
-        public OnFireEvent() : base(EventName.SendFireEvent)
+        public OnFireEvent() : base(EventName.SendFireLocationEvent)
         {
         }
 

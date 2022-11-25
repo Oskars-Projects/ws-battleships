@@ -2,7 +2,7 @@
 {
     public class BattleshipsGame
     {
-        private static readonly int s_gamePlayerSize = 2;
+        private const int s_gamePlayerSize = 2;
         public Player[] Player { get; private set; } = new Player[s_gamePlayerSize];
         
         public BattleshipsGame()
