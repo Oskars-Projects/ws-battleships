@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.WebSockets;
 using System.Text;
+using Lib;
 using server.SocketManager;
 
 namespace server.Handlers
@@ -16,6 +17,11 @@ namespace server.Handlers
             await base.OnConnect(socket);
             string socketId = Connections.GetIdBySocket(socket);
             await SendBroadcastMessage($"{socketId} just joined.");
+
+            // create player object
+            // start asking for name
+            // will be temporarily added her for test purposes
+            await SendMessage(socket, EventName.AskUserNameRequest + EventName.SUFFIX);
         }
 
         public override async Task OnDisconnect(WebSocket socket)

@@ -26,6 +26,7 @@ namespace server.Handlers
                     continue;
                 await messageEvent.OnEvent(this, GamesController, Connections, sender, message[(messageEvent.Name.Length + EventName.SUFFIX.Length)..]);
             }
+            Debug.WriteLine("received: " + message);
         }
     }
 }
