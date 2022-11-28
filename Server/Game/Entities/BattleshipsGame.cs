@@ -3,16 +3,18 @@
     public class BattleshipsGame
     {
         private const int s_gamePlayerSize = 2;
+        public string Name { get; set; }
         public Player[] Player { get; private set; } = new Player[s_gamePlayerSize];
         
-        public BattleshipsGame()
+        public BattleshipsGame(string name)
         {
-
+            Name = name;
         }
 
-        public BattleshipsGame(Player player)
+        public BattleshipsGame(Player player, string name)
         {
             AddPlayer(player);
+            Name = name;
         }
 
         public bool AddPlayer(Player player)

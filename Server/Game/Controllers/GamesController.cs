@@ -4,29 +4,31 @@ namespace server.Game.Controllers
 {
     public class GamesController
     {
-        private Dictionary<string, BattleshipsGame> _games = new();
+        private List<BattleshipsGame> _games = new();
         private Queue<Player> _queue = new();
         private List<Player> _players = new();
 
-        public bool CreateGame(string gameName)
+        public BattleshipsGame? CreateGame(string gameName)
         {
             gameName = gameName.Trim();
 
-            if(_games.First(e => e.Key == gameName).Value != null)
+            if(_games.First(e => e.Name == gameName) != null)
             {
-                _games.Add(gameName, new BattleshipsGame());
-                return true;
+                BattleshipsGame game = new BattleshipsGame(gameName);
+                _games.Add(game);
+                return game;
             }
-            return false;
+            return null;
         }
 
-        public bool CreateGame(string gameName, Player player)
+        public BattleshipsGame? CreateGame(string gameName, Player player)
         {
-            bool success = CreateGame(gameName);
-            if (success)
-                _games.GetValueOrDefault(gameName)!.AddPlayer(player);
-
-            return success;
+            BattleshipsGame? game = CreateGame(gameName);
+            if (game != null)
+            {
+                game.AddPlayer(player);
+            }
+            return game;
         }
 
         public bool JoinGame(string gameName, Player player)
@@ -58,6 +60,10 @@ namespace server.Game.Controllers
         public Player? GetPlayerById(string id)
         {
             return _players.Find(p => p.Id == id);
+        }
+
+        public BattleshipsGame? TryGetGameByName(string gameName) {
+            return _games.First(e => e.Name == gameName);
         }
     }
 }
