@@ -3,12 +3,13 @@ using System.Net.WebSockets;
 using System.Text;
 using Lib.Constants;
 using Newtonsoft.Json;
+using server.Game.Controllers;
 using server.SocketManager;
 
 namespace server.Handlers
 {
     public abstract class SocketMessageHandler : SocketHandler
-    {
+    { 
         public SocketMessageHandler(ConnectionManager connections) : base(connections)
         {
         }
@@ -17,16 +18,7 @@ namespace server.Handlers
         {
             await base.OnConnect(socket);
             string socketId = Connections.GetIdBySocket(socket);
-            await SendBroadcastMessage($"{socketId} just joined.");
-
-            // create player object
-            // start asking for name
-            // will be temporarily added her for test purposes
-            // TODO: Remove
-            await SendMessage(socket, EventName.AskUserNameRequest + EventName.SUFFIX);
-            await SendMessage(socket, EventName.AskBoatLocationRequest+ EventName.SUFFIX + "3");
-            await SendMessage(socket, EventName.AskFireLocationRequst + EventName.SUFFIX);
-            await SendMessage(socket, EventName.SendGameFieldEvent + EventName.SUFFIX + JsonConvert.SerializeObject(TEMPGenerateGameFields()));
+            await SendBroadcastMessage($"{socketId} just joined.");    
         }
 
 

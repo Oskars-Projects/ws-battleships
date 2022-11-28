@@ -2,6 +2,7 @@ using server.Events;
 using server.Game.Controllers;
 using server.Handlers;
 using server.SocketManager;
+using Server.Events;
 
 internal class Program
 {
@@ -26,10 +27,10 @@ internal class Program
 
         MessageEvent[] events = new MessageEvent[]
         {
-            new OnFireEvent()
+            new OnSendUserNameEvent()
         };
 
-        app.Services.GetService<EventMessageHandler>()?.Events.AddRange(events);
+        app.Services.GetService<GameEventMessageHandler>()?.Events.AddRange(events);
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
@@ -41,7 +42,7 @@ internal class Program
         app.MapRazorPages();
         app.UseWebSockets();
 
-        app.MapSockets("/game", app.Services.GetService<EventMessageHandler>()!);
+        app.MapSockets("/game", app.Services.GetService<GameEventMessageHandler>()!);
 
         app.Run();
     }
