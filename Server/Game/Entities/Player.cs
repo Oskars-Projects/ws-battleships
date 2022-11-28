@@ -1,13 +1,25 @@
-﻿namespace server.Game.Entities
+﻿using System.Net.WebSockets;
+using server.Handlers;
+using server.SocketManager;
+
+namespace server.Game.Entities
 {
     public class Player
     {
-        // Is equal to the id of the websocket
-        public string Id { get; set; }
+        public string Id { get { return SocketHandler.Connections.GetIdBySocket(Socket); } }
+        public WebSocket Socket { get; set; }
+        public SocketHandler SocketHandler { get; set; }
+        public string? Name { get; set; }
 
-        public Player(string id)
+        public Player(WebSocket socket, SocketHandler socketHandler)
         {
-            Id = id;
+            Socket = socket;
+            SocketHandler = socketHandler;
+        }
+
+        public async Task SendMessage(string message)
+        {
+            await SocketHandler.SendMessage(Socket, message);
         }
     }
 }
