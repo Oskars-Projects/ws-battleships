@@ -62,8 +62,15 @@ namespace server.Game.Controllers
             return _players.Find(p => p.Id == id);
         }
 
-        public BattleshipsGame? TryGetGameByName(string gameName) {
-            return _games.First(e => e.Name == gameName);
+        public bool TryGetGameByName(string gameName, out BattleshipsGame? game)
+        {
+            game = _games.FirstOrDefault(p => p.Name == gameName);
+            return game != null;
+        }
+
+        public void AddNewGame(string gameName)
+        {
+            _games.Add(new BattleshipsGame(gameName));
         }
     }
 }

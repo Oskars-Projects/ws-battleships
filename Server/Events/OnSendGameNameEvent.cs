@@ -20,7 +20,12 @@ namespace Server.Events
                 await player.SendMessage(EventName.AskGameNameRequest + EventName.SUFFIX);
                 return;
             }
-           
+
+            bool success = gamesController.TryGetGameByName(message, out BattleshipsGame? game);
+            if (!success)
+            {
+                gamesController.AddNewGame(gameName);
+            }
             await player.SendMessage(EventName.AskGameNameRequest + EventName.SUFFIX);
         }
     }
