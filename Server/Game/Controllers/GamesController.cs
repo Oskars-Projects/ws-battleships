@@ -33,8 +33,8 @@ namespace server.Game.Controllers
 
         public bool JoinGame(string gameName, Player player)
         {
-            bool exists = _games.TryGetValue(gameName, out BattleshipsGame game);
-            if (exists && game != null)
+            bool exists = TryGetGameByName(gameName, out BattleshipsGame? game);
+            if (exists)
             {
                 return game.AddPlayer(player);
             }
@@ -66,11 +66,6 @@ namespace server.Game.Controllers
         {
             game = _games.FirstOrDefault(p => p.Name == gameName);
             return game != null;
-        }
-
-        public void AddNewGame(string gameName)
-        {
-            _games.Add(new BattleshipsGame(gameName));
         }
     }
 }

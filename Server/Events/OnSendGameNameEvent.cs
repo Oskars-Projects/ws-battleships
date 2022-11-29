@@ -24,7 +24,7 @@ namespace Server.Events
             bool success = gamesController.TryGetGameByName(message, out BattleshipsGame? game);
             if (!success)
             {
-                gamesController.AddNewGame(gameName);
+                gamesController.CreateGame(message);
             }
             await player.SendMessage(EventName.AskGameNameRequest + EventName.SUFFIX);
         }
