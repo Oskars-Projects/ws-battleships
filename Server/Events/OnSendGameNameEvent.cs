@@ -24,7 +24,8 @@ namespace Server.Events
             {
                 gamesController.CreateGame(message);
             }
-
+            await player.SendMessage(EventName.SendMessageEvent + EventName.SUFFIX + "Place boat with size of " + player.BoatsToPlace.First());
+            await player.SendMessage(EventName.SendBoatLocationEvent + EventName.SUFFIX);
         }
     }
 }
