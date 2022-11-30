@@ -24,6 +24,7 @@ namespace Server.Events
             {
                 gamesController.CreateGame(message);
             }
+
         }
     }
 }
