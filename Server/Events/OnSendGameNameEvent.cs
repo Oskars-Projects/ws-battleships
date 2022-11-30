@@ -5,7 +5,6 @@ using server.Events;
 using server.Game.Controllers;
 using server.Game.Entities;
 using server.Handlers;
-
 namespace Server.Events
 {
 	public class OnSendGameNameEvent : GameMessageEvent
@@ -20,8 +19,11 @@ namespace Server.Events
                 await player.SendMessage(EventName.AskGameNameRequest + EventName.SUFFIX);
                 return;
             }
-           
-            await player.SendMessage(EventName.AskGameNameRequest + EventName.SUFFIX);
+            bool success = gamesController.TryGetGameByName(message, out BattleshipsGame? game);
+            if (!success)
+            {
+                gamesController.CreateGame(message);
+            }
         }
     }
 }

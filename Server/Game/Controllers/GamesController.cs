@@ -12,7 +12,7 @@ namespace server.Game.Controllers
         {
             gameName = gameName.Trim();
 
-            if(_games.First(e => e.Name == gameName) != null)
+            if(_games.FirstOrDefault(e => e.Name == gameName) == null)
             {
                 BattleshipsGame game = new BattleshipsGame(gameName);
                 _games.Add(game);
@@ -33,10 +33,10 @@ namespace server.Game.Controllers
 
         public bool JoinGame(string gameName, Player player)
         {
-            bool exists = _games.TryGetValue(gameName, out BattleshipsGame game);
-            if (exists && game != null)
+            bool exists = TryGetGameByName(gameName, out BattleshipsGame? game);
+            if (exists)
             {
-                return game.AddPlayer(player);
+                return game!.AddPlayer(player);
             }
             return false;
         }
@@ -62,8 +62,10 @@ namespace server.Game.Controllers
             return _players.Find(p => p.Id == id);
         }
 
-        public BattleshipsGame? TryGetGameByName(string gameName) {
-            return _games.First(e => e.Name == gameName);
+        public bool TryGetGameByName(string gameName, out BattleshipsGame? game) 
+        {
+            game = _games.FirstOrDefault(p => p.Name == gameName);
+            return game != null;
         }
     }
 }

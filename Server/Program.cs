@@ -27,7 +27,8 @@ internal class Program
 
         MessageEvent[] events = new MessageEvent[]
         {
-            new OnSendUserNameEvent()
+            new OnSendUserNameEvent(),
+            new OnSendGameNameEvent()
         };
 
         app.Services.GetService<GameEventMessageHandler>()?.Events.AddRange(events);
