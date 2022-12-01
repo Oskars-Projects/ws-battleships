@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 	<InvariantGlobalization>true</InvariantGlobalization>
+	<DockerComposeProjectPath>../docker-compose.dcproj</DockerComposeProjectPath>
+	<UserSecretsId>ba0b32e4-5969-455d-ac96-720bd9ba7327</UserSecretsId>
     </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />

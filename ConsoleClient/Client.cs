@@ -12,6 +12,12 @@ namespace ConsoleClient
     {
         private readonly ClientWebSocket socket = new();
         private readonly Queue<string> sendMessageQueue = new();
+        public string Url { get; set; }
+
+        public Client(string url)
+        {
+            Url = url;
+        }
 
         public void SendMessage(string message)
         {
@@ -25,7 +31,7 @@ namespace ConsoleClient
 
         public async Task Start()
         {
-            await socket.ConnectAsync(new Uri("ws://localhost:5083/game"), CancellationToken.None);
+            await socket.ConnectAsync(new Uri(Url), CancellationToken.None);
             Console.WriteLine("Websocket connection established");
 
             Task send = Task.Run(async () => await SendAsync());

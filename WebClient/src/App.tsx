@@ -4,7 +4,7 @@ import './App.css';
 import Home from './pages/Home';
 import Play from './pages/Play';
 import Header from './pages/shared/components/Header';
-import Spectate from './Spectate';
+import Spectate from './pages/Spectate';
 
 function App() {
 	const [count, setCount] = useState(0);
