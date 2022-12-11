@@ -4,9 +4,9 @@ const Home = () => {
 			<a href="/play">
 				<button>Play</button>
 			</a>
-			<a href="/spectate">
+			{/* <a href="/spectate">
 				<button>Spectate</button>
-			</a>
+			</a> */}
 		</>
 	);
 };

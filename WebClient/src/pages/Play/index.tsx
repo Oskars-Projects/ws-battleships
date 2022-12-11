@@ -1,10 +1,20 @@
-import { useState } from 'react';
+import { createContext, useState } from 'react';
 import GameState from '../../game/GameState';
+import AskBoatLocationComponent from './components/AskBoatLocationComponent';
+import AskGameNameComponent from './components/AskGameNameComponent';
+import AskUserNameComponent from './components/AskUserNameComponent';
+import './play.css';
+
+export const GameFieldContext = createContext<number[][][]>(Array(0));
 
 const Play = () => {
-	const [gameState, setGameState] = useState<GameState>('waiting');
-	const [userName, setUserName] = useState<string>('');
-	const [gameName, setGameName] = useState<string>('');
+	const [displayedComponent, setDisplayedComponent] = useState<JSX.Element>(
+		<h1>Play</h1>,
+	);
+	const [gameFields, setGameFields] = useState<number[][][]>(
+		Array.from(Array(2), () => Array(10).fill(Array(10).fill(0)) as number[][]),
+	);
+
 	const socket = new WebSocket('ws://localhost:5083/game');
 
 	socket.onopen = () => {
@@ -14,52 +24,65 @@ const Play = () => {
 	socket.onmessage = event => {
 		console.log(event.data);
 		if (event.data == 's_askUserName$') {
-			setGameState('askUserName');
+			setDisplayedComponent(<AskUserNameComponent onClick={handleUserName} />);
 		}
 		if (event.data == 's_askGameName') {
-			setGameState('askGameName');
+			setDisplayedComponent(<AskGameNameComponent onClick={handleGameName} />);
 		}
 
-		if (event.data == 's_sendGameName') {
-			// update game state
+		if (event.data == 's_askBoatLocation') {
+			const boatLength: number = parseInt(event.data.split('$')[1]);
+
+			setDisplayedComponent(
+				<AskBoatLocationComponent onClick={handleBoatLocation} />,
+			);
+		}
+
+		if (event.data == 's_sendGameField') {
+			setGameFields(JSON.parse(event.data.split('$')[1]));
 		}
 	};
 
 	socket.onclose = () => {
 		console.log('Disconnected from server');
 	};
-	switch (gameState) {
-		case 'askUserName':
-			return (
+
+	const handleUserName = (value: string) => {
+		socket.send('p_sendUserName$' + value);
+	};
+
+	const handleGameName = (value: string) => {
+		socket.send('p_sendGameName$' + value);
+	};
+
+	const handleBoatLocation = (x: string, y: number) => {
+		socket.send();
+	};
+
+	const getCurrComponent = (gameState: GameState) => {
+		switch (gameState) {
+			case 'askUserName':
+				return;
+			case 'askGameName':
+			case 'askBoatLocation':
+				return <AskBoatLocationComponent boatLength={} />;
+			case 'askFireLocation':
 				<div>
-					<h1>Enter your username</h1>
-					<input
-						type="text"
-						value={userName}
-						onChange={e => setGameName(e.target.value)}
-					/>
-					<button onClick={() => socket.send('p_sendUserName$' + gameName)}>
-						Send
-					</button>
-				</div>
-			);
-		case 'askGameName':
-			return (
-				<div>
-					<h1>Enter the game of your game</h1>
-					<input
-						type="text"
-						value={gameName}
-						onChange={e => setUserName(e.target.value)}
-					/>
-					<button onClick={() => socket.send('p_sendGameName$' + userName)}>
-						Send
-					</button>
-				</div>
-			);
-		default:
-		case 'waiting':
-			return <h1>Play</h1>;
-	}
+					<h1>Shoot at enemy</h1>
+					<div className="gameFieldsContainer">
+						{gameFields.map((gameField, index) => (
+							<GameField data={gameField} key={index} />
+						))}
+					</div>
+				</div>;
+				break;
+			default:
+			case 'waiting':
+		}
+	};
+
+	return (
+		<GameFieldContext.Provider value={gameFields}></GameFieldContext.Provider>
+	);
 };
 export default Play;
