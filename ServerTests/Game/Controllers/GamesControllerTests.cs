@@ -1,20 +1,21 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ServerTests.Game.Entities;
+using Server.Game.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServerTests.Game.Entities
+namespace ServerTests.Game.Controllers
 {
     [TestClass]
-    public class PlayerTest
+    public class GamesControllerTests
     {
         [TestMethod]
-        public void HasBoatsZoPlaceTest()
+        public void ShootTest()
         {
-            List<int> BoatsToPlace = new List<int> {3, 3, 2, 2};
-            Assert.IsTrue(BoatsToPlace.Any());
+            GamesController gamesController = new();
         }
     }
 }
