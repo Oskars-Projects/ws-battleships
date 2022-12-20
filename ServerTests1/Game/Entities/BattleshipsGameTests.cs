@@ -17,33 +17,25 @@ namespace server.Game.Entities.Tests
     public class BattleshipsGameTests
     {
         [TestMethod()]
-        public void BattleshipsGameTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
-        public void BattleshipsGameTest1()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
         public void AddPlayerTest()
         {
-            Assert.Fail();
+            Player firstPlayer = new();
+            Player secondPlayer = new();
+            BattleshipsGame game = new(firstPlayer, "testGame");
+
+            Assert.IsTrue(game.AddPlayer(secondPlayer));
         }
 
         [TestMethod()]
         public void GetOtherPlayerTest()
         {
-            Assert.Fail();
-        }
+            Player firstPlayer = new();
+            Player secondPlayer = new();
+            BattleshipsGame game = new("testGame");
+            game.AddPlayer(firstPlayer);
+            game.AddPlayer(secondPlayer);
 
-        [TestMethod()]
-        public void GetPlayersAsStringTest()
-        {
-            Assert.Fail();
+            Assert.AreEqual(secondPlayer, game.GetOtherPlayer(firstPlayer));
         }
 
         [TestMethod()]
