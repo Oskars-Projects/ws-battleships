@@ -20,7 +20,7 @@ namespace Server.Events
             if (String.IsNullOrWhiteSpace(message))
             {
                 await player.SendMessage(EventName.SendMessageEvent + EventName.SUFFIX + "You need to provide a valid location");
-                await player.SendMessage(EventName.SendBoatLocationEvent + EventName.SUFFIX);
+                await player.SendMessage(EventName.AskBoatLocationRequest + EventName.SUFFIX);
                 return;
             }
             string[] tmp = JsonConvert.DeserializeObject<string[]>(message)!;
