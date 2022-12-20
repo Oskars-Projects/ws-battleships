@@ -22,20 +22,24 @@ namespace Server.Events
             string[] tmp = JsonConvert.DeserializeObject<string[]>(message)!;
             Location location = Location.FromString(tmp[0]);
             BattleshipsGame game = gamesController.GetGameByPlayer(player);
-            bool IsHit = game!.Shoot(player, gamesController.GetGameByPlayer(player).GetOtherPlayer(player), location);
+            Player otherPlayer = gamesController.GetGameByPlayer(player).GetOtherPlayer(player);
+            bool IsHit = game!.Shoot(player, otherPlayer, location);
             if (IsHit)
             {
                 await player.SendMessage(EventName.SendMessageEvent + EventName.SUFFIX + "Hit! Shoot one more time");
-                await player.SendMessage(EventName.SendBoatLocationEvent + EventName.SUFFIX);
+                await player.SendMessage(EventName.SendFireLocationEvent + EventName.SUFFIX);
                 if (!gamesController.CheckIfOpponentHasBoatsLeft(player))
                 {
                     await player.SendMessage(EventName.SendMessageEvent + EventName.SUFFIX + "Game won!");
                     // stop game
+                    gamesController.RemoveGameByPlayer(player);
+                    await handler.Connections.RemoveSocketAsync(player.Socket);
                 }
             } else
             {
                 await player.SendMessage(EventName.SendMessageEvent + EventName.SUFFIX + "No hit, other players turn");
                 // next step
+                await otherPlayer.SendMessage(EventName.AskFireLocationRequst + EventName.SUFFIX);
             }
         }
     }

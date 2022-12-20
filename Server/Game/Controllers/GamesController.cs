@@ -86,6 +86,11 @@ namespace server.Game.Controllers
         public bool CheckIfOpponentHasBoatsLeft(Player player)
         {
             return player.GameFields[1].Board.Any(i => i.Contains(FieldType.BOAT));
-        } 
+        }
+        
+        public void RemoveGameByPlayer(Player player)
+        {
+            _games.Remove(GetGameByPlayer(player));
+        }
     }
 }
