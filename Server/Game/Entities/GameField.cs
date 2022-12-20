@@ -35,7 +35,7 @@ namespace Server.Game.Entities
             {
                 for (int j = 0; j < endLocation.XAsInt - startLocation.XAsInt; j++)
                 {
-                    if (Board[i][j] != FieldType.WATER || !CheckSurroundingLocations(startLocation, endLocation) || CheckValidBoatLength(startLocation, endLocation, length))
+                    if (Board[i][j] != FieldType.WATER || !CheckSurroundingLocations(startLocation, endLocation) || !CheckValidBoatLength(startLocation, endLocation, length))
                     {
                         return false;
                     } 
