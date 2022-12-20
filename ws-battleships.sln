@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibTests", "LibTests\LibTes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleClientTests", "ConsoleClientTests\ConsoleClientTests.csproj", "{A85764A6-DD79-4C17-9C03-1DA14285B70A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerTests", "ServerTests1\ServerTests.csproj", "{5654E7C3-8428-44E4-BD1A-DB42276A78A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerTests", "ServerTests\ServerTests.csproj", "{5654E7C3-8428-44E4-BD1A-DB42276A78A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
