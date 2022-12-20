@@ -4,8 +4,6 @@ using server.Handlers;
 using Lib.Constants;
 using Newtonsoft.Json;
 using Lib.GameEntities;
-using Microsoft.AspNetCore.Components.Web.Virtualization;
-using System.Runtime.ExceptionServices;
 
 namespace Server.Events
 {
@@ -17,12 +15,8 @@ namespace Server.Events
         {
             if (!player.HasBoatsToPlace())
             {
-                // next step
+                await player!.SendMessage(EventName.SendFireLocationEvent + EventName.SUFFIX);
             }
-
-            // check if provided boat is correct length
-            // check if placable
-            // place
             if (String.IsNullOrWhiteSpace(message))
             {
                 await player.SendMessage(EventName.SendMessageEvent + EventName.SUFFIX + "You need to provide a valid location");
@@ -46,7 +40,7 @@ namespace Server.Events
             }
             else
             {
-                //next step
+                await player.SendMessage(EventName.SendFireLocationEvent + EventName.SUFFIX);
             }
         }
     }
