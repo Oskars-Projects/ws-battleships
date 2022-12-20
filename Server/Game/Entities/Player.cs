@@ -14,6 +14,7 @@ namespace server.Game.Entities
         public GameField[] GameFields = new GameField[2] {new GameField(), new GameField()};
         public List<int> BoatsToPlace = new List<int> {5, 4, 4, 3, 3, 3, 2, 2};
 
+        public Player() { }
         public Player(WebSocket socket, SocketHandler socketHandler)
         {
             Socket = socket;

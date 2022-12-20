@@ -1,9 +1,6 @@
 ﻿using Lib.Constants;
 using Lib.Extensions;
 using Lib.GameEntities;
-using System.IO.IsolatedStorage;
-using System.Reflection.Metadata;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Server.Game.Entities
 {
@@ -14,6 +11,12 @@ namespace Server.Game.Entities
         public GameField()
         {
             InitializeArray();
+        }
+
+        public int[] this[int x]
+        {
+            get { return Board[x]; }
+            set { Board[x] = value; }
         }
 
         public bool SetBoatLocation(Location startLocation, Location endLocation, int length)

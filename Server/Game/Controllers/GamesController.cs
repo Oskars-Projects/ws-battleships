@@ -1,4 +1,8 @@
-﻿using server.Game.Entities;
+﻿using Lib.Constants;
+using Lib.GameEntities;
+using server.Game.Entities;
+using Server.Game.Entities;
+using System.Linq;
 
 namespace server.Game.Controllers
 {
@@ -12,7 +16,7 @@ namespace server.Game.Controllers
         {
             gameName = gameName.Trim();
 
-            if(_games.FirstOrDefault(e => e.Name == gameName) == null)
+            if (_games.FirstOrDefault(e => e.Name == gameName) == null)
             {
                 BattleshipsGame game = new BattleshipsGame(gameName);
                 _games.Add(game);
@@ -67,5 +71,21 @@ namespace server.Game.Controllers
             game = _games.FirstOrDefault(p => p.Name == gameName);
             return game != null;
         }
+
+        public bool TryGetGameByPlayer(string playerName, out BattleshipsGame? game)
+        {
+            game = _games.FirstOrDefault(game => game.GetPlayersAsString().Contains(playerName));
+            return game != null;
+        }
+
+        public BattleshipsGame? GetGameByPlayer(Player player)
+        {
+            return _games.Find(game => game.GetPlayersAsString().Contains(player.Name!));
+        }
+
+        public bool CheckIfOpponentHasBoatsLeft(Player player)
+        {
+            return player.GameFields[1].Board.Any(i => i.Contains(FieldType.BOAT));
+        } 
     }
 }

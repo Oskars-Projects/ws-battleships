@@ -1,4 +1,8 @@
-﻿namespace server.Game.Entities
+﻿using Lib.Constants;
+using Lib.GameEntities;
+using Server.Game.Entities;
+
+namespace server.Game.Entities
 {
     public class BattleshipsGame
     {
@@ -26,6 +30,28 @@
             else
                 return false;
             return true;
+        }
+        
+        public Player GetOtherPlayer(Player player)
+        {  
+            return Player[0] == player ? Player[1] : Player[0];
+        }
+
+        public string GetPlayersAsString()
+        {
+            return Player[0] + " " + Player[1];
+        }
+
+        public bool Shoot(Player player, Player otherPlayer, Location location)
+        {
+            GameField otherPlayersBoard = otherPlayer.GameFields[0];
+            if (otherPlayersBoard[location.Y][location.XAsInt] == FieldType.BOAT)
+            {
+                player.GameFields[1][location.Y][location.XAsInt] = FieldType.HIT;
+                return true;
+            }
+            player.GameFields[1][location.Y][location.XAsInt] = FieldType.NOHIT;
+            return false;
         }
     }
 }
