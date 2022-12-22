@@ -16,7 +16,7 @@ namespace Server.Events
             if (String.IsNullOrWhiteSpace(message))
             {
                 await player.SendMessage(EventName.SendMessageEvent + EventName.SUFFIX + "You need to provide a valid location");
-                await player.SendMessage(EventName.SendFireLocationEvent + EventName.SUFFIX);
+                await player.SendMessage(EventName.AskFireLocationRequst + EventName.SUFFIX);
                 return;
             }
             string[] tmp = JsonConvert.DeserializeObject<string[]>(message)!;
@@ -27,7 +27,7 @@ namespace Server.Events
             if (IsHit)
             {
                 await player.SendMessage(EventName.SendMessageEvent + EventName.SUFFIX + "Hit! Shoot one more time");
-                await player.SendMessage(EventName.SendFireLocationEvent + EventName.SUFFIX);
+                await player.SendMessage(EventName.AskFireLocationRequst + EventName.SUFFIX);
                 if (!gamesController.CheckIfOpponentHasBoatsLeft(player))
                 {
                     await player.SendMessage(EventName.SendMessageEvent + EventName.SUFFIX + "Game won!");

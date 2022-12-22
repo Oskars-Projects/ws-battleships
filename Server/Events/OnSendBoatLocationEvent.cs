@@ -31,6 +31,10 @@ namespace Server.Events
             {
                 player.BoatsToPlace.Remove(player.BoatsToPlace.First());
                 await player.SendMessage(EventName.SendMessageEvent + EventName.SUFFIX + "Placing boat successful. Boats to place: " + player.BoatsToPlace.Count);
+            } else
+            {
+                await player.SendMessage(EventName.SendMessageEvent + EventName.SUFFIX + "Invalid location, try again!");
+                await player.SendMessage(EventName.AskBoatLocationRequest + EventName.SUFFIX);
             }
 
             if (player.HasBoatsToPlace())

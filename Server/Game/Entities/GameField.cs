@@ -31,11 +31,11 @@ namespace Server.Game.Entities
 
         private bool CheckBoatLocation(Location startLocation, Location endLocation, int length)
         {
-            for (int i = 0; i < endLocation.Y - startLocation.Y; i++)
+            for (int i = startLocation.Y - 1; i < endLocation.Y - 1; i++)
             {
-                for (int j = 0; j < endLocation.XAsInt - startLocation.XAsInt; j++)
+                for (int j = startLocation.XAsInt - 1; j < endLocation.XAsInt - 1; j++)
                 {
-                    if (Board[i][j] != FieldType.WATER || !CheckSurroundingLocations(startLocation, endLocation) || !CheckValidBoatLength(startLocation, endLocation, length))
+                    if (Board[i][j] != FieldType.WATER || !CheckSurroundingLocations(startLocation, endLocation, length) || !CheckValidBoatLength(startLocation, endLocation, length))
                     {
                         return false;
                     } 
@@ -44,44 +44,67 @@ namespace Server.Game.Entities
             return true;
         }
 
-        private bool CheckSurroundingLocations(Location startLocation, Location endLocation)
+        public bool CheckSurroundingLocations(Location startLocation, Location endLocation, int length)
         {
-            for (int i = 0; i < endLocation.Y - startLocation.Y; i++)
-            { 
-                for (int j = 0; j < endLocation.XAsInt - startLocation.XAsInt; j++)
+            if (!CheckValidBoatLength(startLocation, endLocation, length))
+            {
+                return false;
+            } 
+            
+            if (IsHorizontal(startLocation, endLocation))
+            {
+                for (int i = startLocation.XAsInt - 2; i < endLocation.XAsInt; i++)
                 {
-                    // checks above, below and next to location
-                    if (Board[startLocation.Y + i - 1][startLocation.XAsInt + j] != FieldType.WATER 
-                       || Board[startLocation.Y + i + 1][startLocation.XAsInt + j] != FieldType.WATER
-                       || Board[startLocation.Y + i][startLocation.XAsInt + j - 1] != FieldType.WATER
-                       || Board[startLocation.Y + i][startLocation.XAsInt + j + 1] != FieldType.WATER)
+                    if (i < 0 || i > GameFieldConstants.Size - 1) continue;
+                    if (Board[startLocation.Y - 1][i] != FieldType.WATER)
                     {
-                        // checks diagonals of startLocation
-                        if (Board[startLocation.Y - 1][startLocation.XAsInt - 1] != FieldType.WATER 
-                           || Board[startLocation.Y + 1][startLocation.XAsInt - 1] != FieldType.WATER
-                           || Board[startLocation.Y + 1][startLocation.XAsInt + 1] != FieldType.WATER
-                           || Board[startLocation.Y - 1][startLocation.XAsInt - 1] != FieldType.WATER
-                           //checks diagonals of endLocation
-                           || Board[endLocation.Y - 1][endLocation.XAsInt - 1] != FieldType.WATER
-                           || Board[endLocation.Y + 1][endLocation.XAsInt - 1] != FieldType.WATER
-                           || Board[endLocation.Y + 1][endLocation.XAsInt + 1] != FieldType.WATER
-                           || Board[endLocation.Y - 1][endLocation.XAsInt - 1] != FieldType.WATER)
-                        {
-                            return false;
-                        }
+                        return false;
+                    }
+                    if (startLocation.Y < GameFieldConstants.Size)
+                    {
+                        if (Board[startLocation.Y][i] != FieldType.WATER) return false;
+                    }
+                    if (startLocation.Y - 2 >= 0)
+                    {
+                        if (Board[startLocation.Y - 2][i] != FieldType.WATER) return false;
                     }
                 }
+                return true;
+            } else
+            {
+                for (int i = startLocation.Y; i < endLocation.Y; i++)
+                {
+                    if (i < 0 || i > GameFieldConstants.Size - 1) continue;
+                    if (Board[i][startLocation.XAsInt] != FieldType.WATER)
+                    {
+                        return false;
+                    }
+                    if (startLocation.XAsInt < GameFieldConstants.Size)
+                    {
+                        if (Board[i][startLocation.XAsInt] != FieldType.WATER) return false;
+                    }
+                    if (startLocation.XAsInt - 2 >= 0)
+                    {
+                        if (Board[i][startLocation.XAsInt] != FieldType.WATER) return false;
+                    }
+                }
+                return true;
             }
-            return true;
+            
         }
 
-        private bool CheckValidBoatLength(Location startLocation, Location endLocation, int length)
+        private bool IsHorizontal(Location startLocation, Location endLocation)
         {
-            return (Math.Abs(endLocation.XAsInt - startLocation.XAsInt) + 1 == length && endLocation.Y == startLocation.Y)
-                || (Math.Abs(endLocation.Y - startLocation.Y) + 1 == length && endLocation.XAsInt == startLocation.XAsInt);
+            return endLocation.Y == startLocation.Y;
         }
 
-        private void InitializeArray()
+        public bool CheckValidBoatLength(Location startLocation, Location endLocation, int length)
+        {
+            return (endLocation.XAsInt - startLocation.XAsInt) + 1 == length && endLocation.Y == startLocation.Y
+                || (endLocation.Y - startLocation.Y) + 1 == length && endLocation.XAsInt == startLocation.XAsInt;
+        }
+
+        public void InitializeArray()
         {
             for (int i = 0; i < Board.Length; i++) 
             {
