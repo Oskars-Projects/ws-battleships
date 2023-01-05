@@ -3,12 +3,12 @@ using System.Net.WebSockets;
 using Lib.Constants;
 using server.Events;
 using server.Game.Controllers;
-using server.Game.Entities;
 using server.Handlers;
+using Server.Game.Entities;
 
 namespace Server.Events
 {
-	public class OnSendUserNameEvent : GameMessageEvent
+    public class OnSendUserNameEvent : GameMessageEvent
 	{
 		public OnSendUserNameEvent() : base(EventName.SendUserNameEvent) { }
 
@@ -16,13 +16,13 @@ namespace Server.Events
         {
             if(String.IsNullOrWhiteSpace(message))
             {
-                await player.SendMessage(EventName.SendMessageEvent + EventName.SUFFIX + "You have to provide a valid name!");
-                await player.SendMessage(EventName.AskUserNameRequest + EventName.SUFFIX);
+                player.Chat.SendMessage("You have to provide a valid name!");
+                player.Chat.AskForUserName();
                 return;
             }
 
             player.Name = message;
-            await player.SendMessage(EventName.AskGameNameRequest + EventName.SUFFIX);
+            player.Chat.AskForGameName();
         }
     }
 }

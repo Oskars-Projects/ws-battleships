@@ -1,6 +1,5 @@
 ﻿using Lib.Constants;
 using Lib.GameEntities;
-using server.Game.Entities;
 using Server.Game.Entities;
 using System.Linq;
 
@@ -72,20 +71,15 @@ namespace server.Game.Controllers
             return game != null;
         }
 
-        public bool TryGetGameByPlayer(string playerName, out BattleshipsGame? game)
+        public bool TryGetGameByPlayer(Player player, out BattleshipsGame? game)
         {
-            game = _games.FirstOrDefault(game => game.GetPlayersAsString().Contains(playerName));
+            game = _games.FirstOrDefault(game => game.Players.Contains(player));
             return game != null;
         }
 
         public BattleshipsGame? GetGameByPlayer(Player player)
         {
-            return _games.Find(game => game.GetPlayersAsString().Contains(player.Name!));
-        }
-
-        public bool CheckIfOpponentHasBoatsLeft(Player player)
-        {
-            return player.GameFields[1].Board.Any(i => i.Contains(FieldType.BOAT));
+            return _games.Find(game => game.Players.Contains(player));
         }
         
         public void RemoveGameByPlayer(Player player)

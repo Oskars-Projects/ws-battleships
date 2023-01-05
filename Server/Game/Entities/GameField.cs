@@ -13,98 +13,126 @@ namespace Server.Game.Entities
             InitializeArray();
         }
 
-        public int[] this[int x]
+        public int[] this[int y]
         {
-            get { return Board[x]; }
-            set { Board[x] = value; }
+            get { return Board[y]; }
+            set { Board[y] = value; }
         }
 
-        public bool SetBoatLocation(Location startLocation, Location endLocation, int length)
+        /// <summary>
+        /// Adds a boat to the current game field
+        /// </summary>
+        /// <param name="boat">the boat to add</param>
+        /// <returns>returns true if the boat was placed successfully and false if not</returns>
+        public bool AddBoat(Boat boat)
         {
-            if (CheckBoatLocation(startLocation, endLocation, length))
-            {
-                Board[startLocation.Y - 1][startLocation.XAsInt - 1] = FieldType.BOAT;
-                return true;
-            }
-            return false;
-        }
+            int startX = Math.Min(boat.Start.XAsInt, boat.End.XAsInt);
+            int endX = Math.Max(boat.Start.XAsInt, boat.End.XAsInt);
 
-        private bool CheckBoatLocation(Location startLocation, Location endLocation, int length)
-        {
-            for (int i = startLocation.Y - 1; i < endLocation.Y - 1; i++)
+            int startY = Math.Min(boat.Start.Y, boat.End.Y);
+            int endY = Math.Max(boat.Start.Y, boat.End.Y);
+
+            for (int x = startX; x < endX; x++)
             {
-                for (int j = startLocation.XAsInt - 1; j < endLocation.XAsInt - 1; j++)
+                for(int y = startY; y < endY; y++)
                 {
-                    if (Board[i][j] != FieldType.WATER || !CheckSurroundingLocations(startLocation, endLocation, length) || !CheckValidBoatLength(startLocation, endLocation, length))
-                    {
-                        return false;
-                    } 
+                    if ((FieldType) this[y][x] != FieldType.WATER) return false;
+                    this[y][x] = (int) FieldType.BOAT;
                 }
             }
             return true;
         }
 
-        public bool CheckSurroundingLocations(Location startLocation, Location endLocation, int length)
+        public FieldType GetTypeFromLocation(Location location)
         {
-            if (!CheckValidBoatLength(startLocation, endLocation, length))
+            return (FieldType) this[location.Y][location.XAsInt];
+        }
+
+        /// <summary>
+        /// Checks that the boat's and the boats surrounding locations are water
+        /// </summary>
+        /// <param name="boat">Boat</param>
+        /// <returns>if all locations are water</returns>
+        public bool CheckBoatLocation(Boat boat)
+        {
+            if (boat.Direction == Direction.HORIZONTAL)
             {
-                return false;
-            } 
-            
-            if (IsHorizontal(startLocation, endLocation))
-            {
-                for (int i = startLocation.XAsInt - 2; i < endLocation.XAsInt; i++)
+                int startX = Math.Min(boat.Start.XAsInt, boat.End.XAsInt);
+                int endX = Math.Max(boat.Start.XAsInt, boat.End.XAsInt);
+
+                // try to remove 1 from the start if possible
+                if (startX > 0) startX--;
+                // try to add 1 to the end if possible
+                if (endX < GameFieldConstants.Size - 1) endX++;
+
+                int y = boat.Start.Y;
+
+                for (int x = startX; x < endX; x++)
                 {
-                    if (i < 0 || i > GameFieldConstants.Size - 1) continue;
-                    if (Board[startLocation.Y - 1][i] != FieldType.WATER)
-                    {
+                    // check one above if possible
+                    if (y > 0)
+                        if ((FieldType) this[y - 1][x] != FieldType.WATER) 
+                            return false;
+
+                    // check current y
+                    if ((FieldType) this[y][x] != FieldType.WATER)
                         return false;
-                    }
-                    if (startLocation.Y < GameFieldConstants.Size)
-                    {
-                        if (Board[startLocation.Y][i] != FieldType.WATER) return false;
-                    }
-                    if (startLocation.Y - 2 >= 0)
-                    {
-                        if (Board[startLocation.Y - 2][i] != FieldType.WATER) return false;
-                    }
-                }
-                return true;
-            } else
-            {
-                for (int i = startLocation.Y; i < endLocation.Y; i++)
-                {
-                    if (i < 0 || i > GameFieldConstants.Size - 1) continue;
-                    if (Board[i][startLocation.XAsInt] != FieldType.WATER)
-                    {
-                        return false;
-                    }
-                    if (startLocation.XAsInt < GameFieldConstants.Size)
-                    {
-                        if (Board[i][startLocation.XAsInt] != FieldType.WATER) return false;
-                    }
-                    if (startLocation.XAsInt - 2 >= 0)
-                    {
-                        if (Board[i][startLocation.XAsInt] != FieldType.WATER) return false;
-                    }
+
+                    // check one below if possible
+                    if (y < GameFieldConstants.Size - 1)
+                        if ((FieldType) this[y + 1][x] != FieldType.WATER)
+                            return false;
                 }
                 return true;
             }
-            
+
+            if (boat.Direction == Direction.VERTICAL)
+            {
+                int startY = Math.Min(boat.Start.Y, boat.End.Y);
+                int endY = Math.Max(boat.Start.Y, boat.End.Y);
+
+                // try to remove 1 from the start if possible
+                if (startY > 0) startY--;
+                // try to add 1 to the end if possible
+                if (endY < GameFieldConstants.Size - 1) endY++;
+
+                int x = boat.Start.XAsInt;
+
+                for (int y = startY; y < endY; y++)
+                {
+                    // check one left if possible
+                    if (x > 0)
+                        if ((FieldType) this[y][x - 1] != FieldType.WATER)
+                            return false;
+
+                    // check current x
+                    if ((FieldType) this[y][x] != FieldType.WATER)
+                        return false;
+
+                    // check one right if possible
+                    if (x < GameFieldConstants.Size - 1)
+                        if ((FieldType) this[y][x + 1] != FieldType.WATER)
+                            return false;
+                }
+                return true;
+            }
+            return false;
         }
 
-        private bool IsHorizontal(Location startLocation, Location endLocation)
+        public bool ContainsBoat()
         {
-            return endLocation.Y == startLocation.Y;
+            for (int y = 0; y < this.Board.Length; y++)
+            {
+                for (int x = 0; x < this[y].Length; x++)
+                {
+                    if ((FieldType)this[y][x] == FieldType.BOAT)
+                        return true;
+                }
+            }
+            return false;
         }
 
-        public bool CheckValidBoatLength(Location startLocation, Location endLocation, int length)
-        {
-            return (endLocation.XAsInt - startLocation.XAsInt) + 1 == length && endLocation.Y == startLocation.Y
-                || (endLocation.Y - startLocation.Y) + 1 == length && endLocation.XAsInt == startLocation.XAsInt;
-        }
-
-        public void InitializeArray()
+        private void InitializeArray()
         {
             for (int i = 0; i < Board.Length; i++) 
             {

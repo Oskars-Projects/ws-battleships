@@ -30,7 +30,7 @@ internal class Program
             new OnSendUserNameEvent(),
             new OnSendGameNameEvent(),
             new OnSendBoatLocationEvent(),
-            new OnSendFireLocationEvent()
+            new OnSendShootLocationEvent()
         };
 
         app.Services.GetService<GameEventMessageHandler>()?.Events.AddRange(events);
