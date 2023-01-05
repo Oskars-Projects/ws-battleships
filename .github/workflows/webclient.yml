@@ -1,5 +1,5 @@
 # https://dev.to/mwoodson11/create-deployment-pipeline-for-react-app-on-hostinger-5bc9
-name: Generate a build and push to another branch
+name: webclient deployment
 
 on:
   push:
