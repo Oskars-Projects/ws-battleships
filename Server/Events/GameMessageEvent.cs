@@ -2,12 +2,12 @@
 using System.Net.WebSockets;
 using server.Events;
 using server.Game.Controllers;
-using server.Game.Entities;
 using server.Handlers;
+using Server.Game.Entities;
 
 namespace Server.Events
 {
-	public abstract class GameMessageEvent : MessageEvent
+    public abstract class GameMessageEvent : MessageEvent
 	{
         public string Name { get; set; }
 

@@ -1,11 +1,7 @@
 ﻿using ConsoleClient.ConsoleHelper;
 using Lib.Constants;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Server.Game.Entities;
 
 namespace ConsoleClient.Events
 {
@@ -17,7 +13,7 @@ namespace ConsoleClient.Events
         {
             if (String.IsNullOrWhiteSpace(message)) return;
 
-            int[][]? gameFields = JsonConvert.DeserializeObject<int[][]>(message);
+            GameField[]? gameFields = JsonConvert.DeserializeObject<GameField[]>(message);
 
             if(gameFields == null)
             {

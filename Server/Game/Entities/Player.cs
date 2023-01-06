@@ -1,8 +1,8 @@
 ﻿using System.Net.WebSockets;
 using server.Handlers;
-using server.SocketManager;
+using Server.Game.Chat;
 
-namespace server.Game.Entities
+namespace Server.Game.Entities
 {
     public class Player
     {
@@ -11,15 +11,15 @@ namespace server.Game.Entities
         public SocketHandler SocketHandler { get; set; }
         public string? Name { get; set; }
 
+
+        public PlayerChat Chat { get; private set; }
+
         public Player(WebSocket socket, SocketHandler socketHandler)
         {
             Socket = socket;
             SocketHandler = socketHandler;
-        }
 
-        public async Task SendMessage(string message)
-        {
-            await SocketHandler.SendMessage(Socket, message);
+            Chat = new PlayerChat(Socket, SocketHandler);
         }
     }
 }
