@@ -20,9 +20,7 @@ namespace Server.Events
                 return;
             }
 
-            string[] tmp = JsonConvert.DeserializeObject<string[]>(message)!;
-            Location location = Location.FromString(tmp[0]);
-            
+            Location location = Location.FromString(message.Trim());
             bool exists = gamesController.TryGetGameByPlayer(player, out BattleshipsGame? game);
 
             if(!exists || game == null)

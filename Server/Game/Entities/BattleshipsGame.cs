@@ -7,14 +7,8 @@ using System.Numerics;
 
 namespace Server.Game.Entities
 {
-
-
     public class BattleshipsGame
     {
-        public delegate void OnShootEventHandler(Location location, Player attacker, Player target);
-        
-        
-        
         public const int s_gamePlayerSize = 2;
         public string Name { get; set; }
         public bool Over { get; set; } = false;
@@ -24,9 +18,6 @@ namespace Server.Game.Entities
 
         public BattleshipsGameChat Chat { get; private set; }
         public BattleshipsGameEventController Controller { get; private set; }
-
-        // events
-        public event OnShootEventHandler? OnShoot;
 
         public BattleshipsGame(string name)
         {
@@ -49,44 +40,119 @@ namespace Server.Game.Entities
             {
                 bool success = PlayerData.TryGetValue(p, out PlayerData? data);
                 if (!success || data == null) continue;
-                p.Chat.AskForBoatLocation(data.BoatLenghtsToPlace[0]);
+                AskPlayerForBoatLocation(p);
             }
+        }
+
+
+        public void AskPlayerForBoatLocation(Player player)
+        {
+            PlayerData data = PlayerData[player];
+
+            // return if the player does not have boats to place
+            if (data.BoatLenghtsToPlace.Count == 0) return;
+
+            player.Chat.SendGameField(data.BoatGameField);
+            player.Chat.AskForBoatLocation(data.BoatLenghtsToPlace.First());
+        }
+
+        public void PlaceBoat(Boat boat, Player player)
+        {
+            Controller.PlaceBoat(boat, player);
+
+            if (PlayerData[player].BoatLenghtsToPlace.Count != 0)
+            {
+                AskPlayerForBoatLocation(player);
+            }
+            else
+            {
+                Player enemy = GetOtherPlayer(player);
+                PlayerData enemyPlayerData = PlayerData[enemy];
+                if (enemyPlayerData.BoatLenghtsToPlace.Count == 0)
+                {
+                    // ask first player for shoot location, after both players are finished placing
+                    AskPlayerForShootLocation(player);
+                }
+                else
+                {
+                    player.Chat.SendMessage($"Waiting for {enemy.Name} to finish.");
+                }
+            }
+        }
+
+        public void AskPlayerForShootLocation(Player p)
+        {
+            GetOtherPlayer(p).Chat.SendMessage($"It is {p.Name}'s turn.");
+
+            PlayerData data = PlayerData[p];
+            p.Chat.SendGameFields(new GameField[]{ data.BoatGameField, data.TargetGameField });
+            p.Chat.AskForShootLocation();
         }
 
         public void Shoot(Location location, Player attacker)
         {
             Player target = GetOtherPlayer(attacker);
-            this.OnShoot?.Invoke(location, attacker, target);
+            bool hit = Controller.Shoot(location, attacker, target);
+
+            if (hit)
+            {
+                // check if the targets field still contains a baot
+                if (!PlayerData[target].BoatGameField.ContainsBoat())
+                {
+                    // end the Game and set the attacker as winner
+                    EndGame(attacker, target);
+                    return;
+                }
+                // if hit then its attacker's turn again
+                AskPlayerForShootLocation(attacker);
+            }
+            else
+            {
+                // enemys turn if nothing got hit
+                AskPlayerForShootLocation(target);
+            }
         }
 
         public bool AddPlayer(Player player)
         {
             try
             {
-                this.Players.Add(player);
+                Players.Add(player);
                 Chat.SendJoinMessage(player);
 
                 // initialize player values
                 PlayerData.Add(player, new PlayerData());
 
-                if(Players.Count == s_gamePlayerSize)
+                if (Players.Count == s_gamePlayerSize)
                     Start();
-                
-
                 return true;
-            } catch (Exception)
+            }
+            catch (Exception)
             {
                 return false;
             }
         }
 
+        /// <summary>
+        /// Returns the other player
+        /// TODO: find better way to do this
+        /// </summary>
+        /// <param name="player">a player</param>
+        /// <returns>the other player</returns>
         public Player GetOtherPlayer(Player player)
         {
-            return Players[0] == player ? Players[0] : Players[1];
-        }    
+            return Players[0] == player ? Players[1] : Players[0];
+        }
+
+        public void EndGame(Player winner, Player loser)
+        {
+            Over = true;
+
+            winner.Chat.SendMessage("You won!");
+            loser.Chat.SendMessage("You lost!");
+            Chat.SendGameOverMessage(winner);
+        }
     }
-
-
 
     public class PlayerData
     {

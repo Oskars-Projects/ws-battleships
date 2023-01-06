@@ -1,6 +1,9 @@
 ﻿using Lib.Constants;
+using Newtonsoft.Json;
 using server.Handlers;
+using Server.Game.Entities;
 using System.Net.WebSockets;
+using System.Numerics;
 
 namespace Server.Game.Chat
 {
@@ -34,6 +37,16 @@ namespace Server.Game.Chat
             await SendEventMessage(EventName.SendMessageEvent, message);
         }
 
+        public void SendGameField(GameField field)
+        {
+            SendGameFields(new GameField[] { field });
+        }
+
+        public async void SendGameFields(GameField[] fields)
+        {
+            await SendEventMessage(EventName.SendGameFieldEvent, JsonConvert.SerializeObject(fields));
+        }
+
         public async void AskForBoatLocation(int length)
         {
             await SendEventMessage(EventName.AskBoatLocationRequest, length);
@@ -53,5 +66,7 @@ namespace Server.Game.Chat
         {
             await SendEventMessage(EventName.AskUserNameRequest);
         }
+
+
     }
 }

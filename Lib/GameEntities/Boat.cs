@@ -11,8 +11,8 @@
             {
                 return Direction switch
                 {
-                    Direction.HORIZONTAL => Math.Abs(Start.XAsInt - End.XAsInt),
-                    Direction.VERTICAL => Math.Abs(Start.Y - End.Y),
+                    Direction.HORIZONTAL => Math.Abs(Start.XIdx - End.XIdx) + 1,
+                    Direction.VERTICAL => Math.Abs(Start.Y - End.Y) + 1,
                     _ => throw new ArgumentException("A boat can only have a length, if it is placed horizontal or vertical!"),
                 };
             } 
@@ -22,8 +22,8 @@
         {
             get
             {
-                if(Start.X == End.X) return Direction.HORIZONTAL;
-                if(Start.Y == End.Y) return Direction.VERTICAL;
+                if(Start.X == End.X) return Direction.VERTICAL;
+                if(Start.Y == End.Y) return Direction.HORIZONTAL;
                 return Direction.DIAGONAL;
             }
         }

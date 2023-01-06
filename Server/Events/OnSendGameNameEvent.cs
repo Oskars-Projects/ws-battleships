@@ -21,6 +21,13 @@ namespace Server.Events
                 player.Chat.AskForGameName();
                 return;
             }
+
+            if(gamesController.GetGameByPlayer(player) != null)
+            {
+                player.Chat.SendMessage("You are already in a game!");
+                return;
+            }
+
             // trying to find an existing game
             bool success = gamesController.TryGetGameByName(message, out BattleshipsGame? game);
 
@@ -37,7 +44,6 @@ namespace Server.Events
             }
 
             game.AddPlayer(player);
-            player.Chat.SendMessage("Successfully joined game '" + game.Name + "'.");
         }
     }
 }
