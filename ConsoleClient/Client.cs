@@ -25,7 +25,7 @@ namespace ConsoleClient
 
         public async Task Start()
         {
-            await socket.ConnectAsync(new Uri("ws://localhost:5083/game"), CancellationToken.None);
+            await socket.ConnectAsync(new Uri("wss://api.battleships.oskars.tech/game"), CancellationToken.None);
             Console.WriteLine("Websocket connection established");
 
             Task send = Task.Run(async () => await SendAsync());
