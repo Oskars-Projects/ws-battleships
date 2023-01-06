@@ -14,6 +14,13 @@ internal class Program
         builder.Services.AddRazorPages();
         builder.Services.AddWebSocketManager();
         builder.Services.AddSingleton<GamesController>();
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.WithOrigins("*");
+            });
+        });
 
         var app = builder.Build();
 
@@ -39,6 +46,7 @@ internal class Program
         app.UseStaticFiles();
 
         app.UseRouting();
+        app.UseCors();
 
         app.UseAuthorization();
 
