@@ -38,7 +38,6 @@ namespace ConsoleClient.ConsoleHelper
                 Console.WriteLine("X is not in the correct range!");
                 return AskForX();
             }
-
             return x;
         }
 

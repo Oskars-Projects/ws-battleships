@@ -1,40 +1,45 @@
-﻿using server.Game.Entities;
+﻿using Lib.Constants;
+using Lib.GameEntities;
+using Server.Game.Entities;
+using System.Linq;
 
 namespace server.Game.Controllers
 {
     public class GamesController
     {
-        private Dictionary<string, BattleshipsGame> _games = new();
+        private List<BattleshipsGame> _games = new();
         private Queue<Player> _queue = new();
         private List<Player> _players = new();
 
-        public bool CreateGame(string gameName)
+        public BattleshipsGame? CreateGame(string gameName)
         {
             gameName = gameName.Trim();
 
-            if(_games.First(e => e.Key == gameName).Value != null)
+            if (_games.FirstOrDefault(e => e.Name == gameName) == null)
             {
-                _games.Add(gameName, new BattleshipsGame());
-                return true;
+                BattleshipsGame game = new BattleshipsGame(gameName);
+                _games.Add(game);
+                return game;
             }
-            return false;
+            return null;
         }
 
-        public bool CreateGame(string gameName, Player player)
+        public BattleshipsGame? CreateGame(string gameName, Player player)
         {
-            bool success = CreateGame(gameName);
-            if (success)
-                _games.GetValueOrDefault(gameName)!.AddPlayer(player);
-
-            return success;
+            BattleshipsGame? game = CreateGame(gameName);
+            if (game != null)
+            {
+                game.AddPlayer(player);
+            }
+            return game;
         }
 
         public bool JoinGame(string gameName, Player player)
         {
-            bool exists = _games.TryGetValue(gameName, out BattleshipsGame game);
-            if (exists && game != null)
+            bool exists = TryGetGameByName(gameName, out BattleshipsGame? game);
+            if (exists)
             {
-                return game.AddPlayer(player);
+                return game!.AddPlayer(player);
             }
             return false;
         }
@@ -58,6 +63,28 @@ namespace server.Game.Controllers
         public Player? GetPlayerById(string id)
         {
             return _players.Find(p => p.Id == id);
+        }
+
+        public bool TryGetGameByName(string gameName, out BattleshipsGame? game)
+        {
+            game = _games.FirstOrDefault(p => p.Name == gameName);
+            return game != null;
+        }
+
+        public bool TryGetGameByPlayer(Player player, out BattleshipsGame? game)
+        {
+            game = _games.FirstOrDefault(game => game.Players.Contains(player));
+            return game != null;
+        }
+
+        public BattleshipsGame? GetGameByPlayer(Player player)
+        {
+            return _games.Find(game => game.Players.Contains(player));
+        }
+        
+        public void RemoveGameByPlayer(Player player)
+        {
+            _games.Remove(GetGameByPlayer(player));
         }
     }
 }

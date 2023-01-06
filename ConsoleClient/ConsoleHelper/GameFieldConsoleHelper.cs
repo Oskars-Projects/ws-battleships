@@ -1,37 +1,48 @@
 ﻿using Lib.Constants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Server.Game.Entities;
 
 namespace ConsoleClient.ConsoleHelper
 {
     public static class GameFieldConsoleHelper
     {
+        private static string[] s_LETTERS = new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
 
-        public static void PrintGameFields(int[][] gameFields)
+
+        public static void PrintGameFields(GameField[] gameFields)
         {
 
-            if (gameFields[0] == null)
+            if (gameFields.Length == 0)
                 return;
 
-            if (gameFields[0].Length != Math.Pow(GameFieldConstants.Size, 2))
+            // build header
+
+            Console.Write("  ");
+            // for every array
+            for (int i = 0; i < gameFields.Length; i++)
             {
-                Console.WriteLine("GameField has invalid length!");
-                return;
+                for (int x = 0; x < gameFields[i].Board.Length; x++)
+                {
+                    Console.Write(i + " ");
+                }
+                Console.Write("  ");
             }
+
+            Console.WriteLine();
 
             // Loop for every row
             for(int y = 0; y < GameFieldConstants.Size; y++)
             {
+                Console.Write(s_LETTERS[y] + " ");
+
                 // Loop for every array
-                for (int j = 0; j < gameFields.GetLength(0); j++)
+                for (int j = 0; j < gameFields.Length; j++)
                 {
                     // Loop for every column
                     for(int x = 0; x < GameFieldConstants.Size; x++)
                     {
-                        int val = gameFields[j][y * GameFieldConstants.Size + x];
+
+                        FieldType val = (FieldType) gameFields[j][y][x];
                         Console.BackgroundColor = val switch
                         {
                             FieldType.WATER => ConsoleColor.Blue,

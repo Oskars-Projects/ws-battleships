@@ -14,13 +14,13 @@ namespace Lib.Constants
         public const string SendUserNameEvent = "p_sendUserName";
         public const string SendGameNameEvent = "p_sendGameName";
         public const string SendBoatLocationEvent = "p_sendBoatLocation";
-        public const string SendFireLocationEvent = "p_sendFireLocation";
+        public const string SendShootLocationEvent = "p_sendShootLocation";
 
         // SERVER EVENTS
         public const string AskUserNameRequest = "s_askUserName";
         public const string AskGameNameRequest = "s_askGameName";
         public const string AskBoatLocationRequest = "s_askBoatLocation";
-        public const string AskFireLocationRequst = "s_askFireLocation";
+        public const string AskShootLocationRequst = "s_askShootLocation";
         public const string SendMessageEvent = "s_sendMessage";
         public const string SendGameFieldEvent = "s_sendGameField";
 

@@ -11,12 +11,13 @@ namespace ConsoleClient.Events
 {
     public class OnAskFireLocationEvent : ServerEvent
     {
-        public OnAskFireLocationEvent() : base(EventName.AskFireLocationRequst) { }
+        public OnAskFireLocationEvent() : base(EventName.AskShootLocationRequst) { }
 
         public override void OnMessage(Client client, string? message)
         {
+            Console.WriteLine("Your turn! Try to shoot the boats of your enemy.");
             Location location = LocationConsoleHelper.AskForLocation();
-            client.SendMessage($"{EventName.SendFireLocationEvent}{EventName.SUFFIX}{location}");
+            client.SendMessage($"{EventName.SendShootLocationEvent}{EventName.SUFFIX}{location}");
         }
     }
 }
