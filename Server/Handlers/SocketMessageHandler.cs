@@ -21,25 +21,6 @@ namespace server.Handlers
             await SendBroadcastMessage($"{socketId} just joined.");    
         }
 
-
-        // TODO: Remove
-        private int[][] TEMPGenerateGameFields()
-        {
-            Random random = new();
-
-            int[][] gameFields = new int[2][];
-            for (int i = 0; i < 2; i++)
-            {
-                int[] values = new int[100];
-                for (int j = 0; j < 100; j++)
-                {
-                    values[j] = random.Next(0, 4);
-                }
-                gameFields[i] = values;
-            }
-            return gameFields;
-        }
-
         public override async Task OnDisconnect(WebSocket socket)
         {
             string socketId = Connections.GetIdBySocket(socket);

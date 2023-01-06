@@ -46,7 +46,7 @@ namespace Lib.GameEntities.Tests
         public void XAsIntTest()
         {
             Location location = new() { X = 'c', Y = 3 };
-            Assert.AreEqual(location.XAsInt, 3);
+            Assert.AreEqual(location.XIdx, 3);
         }
     }
 }

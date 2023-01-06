@@ -13,7 +13,8 @@ namespace Lib.GameEntities
         public int Y { get; set; }
         public char X { get; set; }
 
-        public int XAsInt { get { return X.AsInt(); } }
+        public int YIdx { get { return Y - 1; } }
+        public int XIdx { get { return X.AsInt() - 1; } }
 
         public static Location FromString(string str)
         {
@@ -25,7 +26,7 @@ namespace Lib.GameEntities
             };
         }
 
-        public override string? ToString()
+        public override string ToString()
         {
             return X + ";" + Y;
         }

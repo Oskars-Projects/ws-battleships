@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lib.Constants
+namespace Lib.GameEntities
 {
-    public enum FieldType
+    public enum Direction
     {
-        WATER,
-        BOAT,
-        HIT,
-        NOHIT
+        HORIZONTAL,
+        VERTICAL,
+        DIAGONAL
     }
 }

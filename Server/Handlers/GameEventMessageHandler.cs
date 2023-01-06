@@ -1,9 +1,9 @@
 ﻿using Lib.Constants;
 using server.Events;
 using server.Game.Controllers;
-using server.Game.Entities;
 using server.SocketManager;
 using Server.Events;
+using Server.Game.Entities;
 using System.Diagnostics;
 using System.Net.Sockets;
 using System.Net.WebSockets;
@@ -23,11 +23,10 @@ namespace server.Handlers
         public override async Task OnConnect(WebSocket socket)
         {
             await base.OnConnect(socket);
-            Debug.WriteLine("HERE");
-
             Player player = new Player(socket, this);
+
             GamesController.AddPlayer(player);
-            await player.SendMessage(EventName.AskUserNameRequest + EventName.SUFFIX);
+            player.Chat.AskForUserName();
         }
 
         public override async Task ReceiveMessage(WebSocket sender, string message)
@@ -39,7 +38,6 @@ namespace server.Handlers
                 player = new Player(sender, this);
                 GamesController.AddPlayer(player);
             }
-
 
             foreach(GameMessageEvent gameMessageEvent in Events)
             {
