@@ -8,67 +8,73 @@ using System.Threading.Tasks;
 
 namespace ConsoleClient
 {
-    public class Client
-    {
-        private readonly ClientWebSocket socket = new();
-        private readonly Queue<string> sendMessageQueue = new();
+	public class Client
+	{
+		private readonly ClientWebSocket socket = new();
+		private readonly Queue<string> sendMessageQueue = new();
+		public string Url { get; set; }
 
-        public void SendMessage(string message)
-        {
-            sendMessageQueue.Enqueue(message);
-        }
+		public Client(string url)
+		{
+			Url = url;
+		}
 
-        public bool IsConnected()
-        {
-            return socket.State == WebSocketState.Open;
-        }
+		public void SendMessage(string message)
+		{
+			sendMessageQueue.Enqueue(message);
+		}
 
-        public async Task Start()
-        {
-            await socket.ConnectAsync(new Uri("wss://api.battleships.oskars.tech/game"), CancellationToken.None);
-            Console.WriteLine("Websocket connection established");
+		public bool IsConnected()
+		{
+			return socket.State == WebSocketState.Open;
+		}
 
-            Task send = Task.Run(async () => await SendAsync());
-            Task receive = ReceiveAsync();
-            await Task.WhenAll(send, receive);
-        }
+		public async Task Start()
+		{
+			await socket.ConnectAsync(new Uri("wss://api.battleships.oskars.tech/game"), CancellationToken.None);
+			Console.WriteLine("Websocket connection established");
 
-        private async Task SendAsync()
-        {
-            while (true)
-            {
-                if (!(sendMessageQueue.Count > 0))
-                    continue;
-                string message = sendMessageQueue.Dequeue();
+			Task send = Task.Run(async () => await SendAsync());
+			Task receive = ReceiveAsync();
+			await Task.WhenAll(send, receive);
+		}
 
-                if (message == "exit")
-                    break;
+		private async Task SendAsync()
+		{
+			while (true)
+			{
+				if (!(sendMessageQueue.Count > 0))
+					continue;
+				string message = sendMessageQueue.Dequeue();
 
-                byte[] bytes = Encoding.UTF8.GetBytes(message);
-                await socket.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
-            }
-            Console.WriteLine("Closing Socket");
-            await socket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "Connection closed by client.", CancellationToken.None);
-        }
+				if (message == "exit")
+					break;
 
-        private async Task ReceiveAsync()
-        {
-            byte[] buffer = new byte[1024 * 4];
-            while (true)
-            {
-                WebSocketReceiveResult wsResult = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+				byte[] bytes = Encoding.UTF8.GetBytes(message);
+				await socket.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
+			}
+			Console.WriteLine("Closing Socket");
+			await socket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "Connection closed by client.", CancellationToken.None);
+		}
 
-                string message = Encoding.UTF8.GetString(buffer, 0, wsResult.Count);
-                if (!String.IsNullOrWhiteSpace(message))
-                    new MessageEventHandler().OnMessage(this, message);
+		private async Task ReceiveAsync()
+		{
+			byte[] buffer = new byte[1024 * 4];
+			while (true)
+			{
+				WebSocketReceiveResult wsResult = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
 
-                if (wsResult.MessageType == WebSocketMessageType.Close)
-                {
-                    if (socket.State != WebSocketState.Closed)
-                        await socket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "Connection closed by host.", CancellationToken.None);
-                    break;
-                }
-            }
-        }
-    }
+				string message = Encoding.UTF8.GetString(buffer, 0, wsResult.Count);
+				if (!String.IsNullOrWhiteSpace(message))
+					new MessageEventHandler().OnMessage(this, message);
+
+				if (wsResult.MessageType == WebSocketMessageType.Close)
+				{
+					if (socket.State != WebSocketState.Closed)
+						await socket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "Connection closed by host.", CancellationToken.None);
+					break;
+				}
+			}
+		}
+	}
 }

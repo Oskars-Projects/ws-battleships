@@ -1,0 +1,13 @@
+.grid {
+	display: grid;
+	grid-template-columns: repeat(11, 2rem);
+	overflow: hidden;
+	justify-content: center;
+}
+
+.cell {
+	width: 2rem;
+	height: 2rem;
+	border: 1px solid black;
+	overflow: hidden;
+}

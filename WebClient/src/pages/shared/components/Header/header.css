@@ -1,0 +1,11 @@
+#page-header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 10px;
+}
+
+.header-icon {
+	width: 2.5rem;
+	height: 2.5rem;
+}
