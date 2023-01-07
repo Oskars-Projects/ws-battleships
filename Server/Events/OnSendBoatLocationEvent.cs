@@ -35,7 +35,14 @@ namespace Server.Events
                 return;
             }
 
-            string[] locationArray = JsonConvert.DeserializeObject<string[]>(message)!;
+            string[] locationArray = JsonConvert.DeserializeObject<string[]>(message);
+
+            if(locationArray == null)
+            {
+                player.Chat.SendMessage("Location had invalid format!");
+                return;
+            }
+
             Location startLocation = Location.FromString(locationArray[0]);
             Location endLocation = Location.FromString(locationArray[1]);
 
