@@ -99,7 +99,7 @@ namespace Server.Game.Entities
             PlayerData attackerData = PlayerData[attacker];
             attacker.Chat.SendGameFields(new GameField[] { attackerData.BoatGameField, attackerData.TargetGameField });
             PlayerData targetData = PlayerData[target];
-            attacker.Chat.SendGameFields(new GameField[] { targetData.BoatGameField, targetData.TargetGameField });
+            target.Chat.SendGameFields(new GameField[] { targetData.BoatGameField, targetData.TargetGameField });
 
             if (hit)
             {
