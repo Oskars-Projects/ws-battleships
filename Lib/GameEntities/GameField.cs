@@ -68,7 +68,7 @@ namespace Server.Game.Entities
 
                 int y = boat.Start.YIdx;
 
-                for (int x = startX; x < endX; x++)
+                for (int x = startX; x <= endX; x++)
                 {
                     // check one above if possible
                     if (y > 0)
@@ -99,7 +99,7 @@ namespace Server.Game.Entities
 
                 int x = boat.Start.XIdx;
 
-                for (int y = startY; y < endY; y++)
+                for (int y = startY; y <= endY; y++)
                 {
                     // check one left if possible
                     if (x > 0)

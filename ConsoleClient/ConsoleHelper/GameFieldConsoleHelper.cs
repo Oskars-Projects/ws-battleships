@@ -8,15 +8,9 @@ namespace ConsoleClient.ConsoleHelper
     {
         private static string[] s_LETTERS = new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
 
-
         public static void PrintGameFields(GameField[] gameFields)
         {
-
-            if (gameFields.Length == 0)
-                return;
-
             // build header
-
             Console.Write("  ");
             // for every game field
             for (int i = 0; i < gameFields.Length; i++)
@@ -24,19 +18,18 @@ namespace ConsoleClient.ConsoleHelper
                 // for every entry in an array field (x coord)
                 for (int x = 0; x < gameFields[i].Board.Length; x++)
                 {
-                    Console.Write("  " + s_LETTERS[x]);
+                    Console.Write(s_LETTERS[x] + " ");
                 }
                 Console.Write("  ");
             }
-
             Console.WriteLine();
 
             // Loop for every row
             for(int y = 0; y < GameFieldConstants.Size; y++)
             {
                 // if the y coordinate is 10 or larger, we need to make the suffix smaller
-                string suffix = (y+1) >= 10 ? " " : "  ";
-                Console.Write((y+1) + suffix);
+                string prefix = (y+1) >= 10 ? "" : " ";
+                Console.Write(prefix + (y+1));
 
                 // Loop for every array
                 for (int j = 0; j < gameFields.Length; j++)
@@ -61,9 +54,6 @@ namespace ConsoleClient.ConsoleHelper
                 }
                 Console.WriteLine();
             }
-
-
         }
-
     }
 }

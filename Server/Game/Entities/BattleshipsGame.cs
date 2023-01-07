@@ -40,6 +40,7 @@ namespace Server.Game.Entities
             {
                 bool success = PlayerData.TryGetValue(p, out PlayerData? data);
                 if (!success || data == null) continue;
+                p.Chat.SendGameField(data.BoatGameField);
                 AskPlayerForBoatLocation(p);
             }
         }
@@ -52,13 +53,13 @@ namespace Server.Game.Entities
             // return if the player does not have boats to place
             if (data.BoatLenghtsToPlace.Count == 0) return;
 
-            player.Chat.SendGameField(data.BoatGameField);
             player.Chat.AskForBoatLocation(data.BoatLenghtsToPlace.First());
         }
 
         public void PlaceBoat(Boat boat, Player player)
         {
             Controller.PlaceBoat(boat, player);
+            player.Chat.SendGameField(PlayerData[player].BoatGameField);
 
             if (PlayerData[player].BoatLenghtsToPlace.Count != 0)
             {
@@ -93,6 +94,12 @@ namespace Server.Game.Entities
         {
             Player target = GetOtherPlayer(attacker);
             bool hit = Controller.Shoot(location, attacker, target);
+
+            // show both players the new game field after a shot
+            PlayerData attackerData = PlayerData[attacker];
+            attacker.Chat.SendGameFields(new GameField[] { attackerData.BoatGameField, attackerData.TargetGameField });
+            PlayerData targetData = PlayerData[target];
+            attacker.Chat.SendGameFields(new GameField[] { targetData.BoatGameField, targetData.TargetGameField });
 
             if (hit)
             {

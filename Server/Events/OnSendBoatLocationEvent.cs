@@ -35,7 +35,7 @@ namespace Server.Events
                 return;
             }
 
-            string[] locationArray = JsonConvert.DeserializeObject<string[]>(message);
+            string[]? locationArray = JsonConvert.DeserializeObject<string[]>(message);
 
             if(locationArray == null)
             {
@@ -47,7 +47,6 @@ namespace Server.Events
             Location endLocation = Location.FromString(locationArray[1]);
 
             Boat boat = new(startLocation, endLocation);
-
 
             game.PlaceBoat(boat, player);
         }
