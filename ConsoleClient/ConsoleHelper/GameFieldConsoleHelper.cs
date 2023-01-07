@@ -18,12 +18,13 @@ namespace ConsoleClient.ConsoleHelper
             // build header
 
             Console.Write("  ");
-            // for every array
+            // for every game field
             for (int i = 0; i < gameFields.Length; i++)
             {
+                // for every entry in an array field (x coord)
                 for (int x = 0; x < gameFields[i].Board.Length; x++)
                 {
-                    Console.Write(i + " ");
+                    Console.Write("  " + s_LETTERS[x]);
                 }
                 Console.Write("  ");
             }
@@ -33,7 +34,9 @@ namespace ConsoleClient.ConsoleHelper
             // Loop for every row
             for(int y = 0; y < GameFieldConstants.Size; y++)
             {
-                Console.Write(s_LETTERS[y] + " ");
+                // if the y coordinate is 10 or larger, we need to make the suffix smaller
+                string suffix = (y+1) >= 10 ? " " : "  ";
+                Console.Write((y+1) + suffix);
 
                 // Loop for every array
                 for (int j = 0; j < gameFields.Length; j++)
