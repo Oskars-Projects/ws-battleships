@@ -6,6 +6,6 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        new Client().Start().GetAwaiter().GetResult();
+        new Client("wss://api.battleships.oskars.tech/game").Start().GetAwaiter().GetResult();
     }
 }
