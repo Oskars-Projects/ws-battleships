@@ -18,7 +18,7 @@ namespace Server.Game.Controllers
         /// </summary>1
         /// <param name="boat">Boat that should be placed</param>
         /// <param name="player">Player whos boat should be placed</param>
-        public void PlaceBoat(Boat boat, Player player)
+        public bool PlaceBoat(Boat boat, Player player)
         {
             int currBoatLength = Game.PlayerData[player].BoatLenghtsToPlace.First();
 
@@ -31,22 +31,21 @@ namespace Server.Game.Controllers
             catch (Exception e)
             {
                 player.Chat.SendMessage(e.Message);
-                return;
+                return false;
             }
-
 
             // check for valid boat length
             if (boatLength != currBoatLength)
             {
                 player.Chat.SendMessage("The boat you were trying to palce should have a length of " + currBoatLength + ", but had actually a length of " + boatLength);
-                return;
+                return false;
             }
 
             // check if boat is placable and has no sorrounding ships Gamefield
             if (!Game.PlayerData[player].BoatGameField.CheckBoatLocation(boat))
             {
                 player.Chat.SendMessage("You can not place a boat next to another boat!");
-                return;
+                return false;
             }
 
             // place the boat
@@ -56,15 +55,13 @@ namespace Server.Game.Controllers
             if (!success)
             {
                 player.Chat.SendMessage("Invalid location, try again!");
-                return;
+                return false;
             }
-
             // remove the current boat length from the players list
             Game.PlayerData[player].BoatLenghtsToPlace.Remove(currBoatLength);
             player.Chat.SendMessage("Placing boat successful.");
+            return true;
         }
-
-
 
         /// <summary>
         /// Shoots at the other player of the Game
